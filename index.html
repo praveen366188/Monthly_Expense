@@ -374,24 +374,26 @@
   function printPage() {
     window.print();
   }
-  window.onload = function() {
-    const storedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
+  window.onload = function () {
+    const storedExpenses = JSON.parse(localStorage.getItem('expenses'));
 
-    const tbody = document.getElementById("expenseBody");
-    tbody.innerHTML = ''; // Clear existing content
+    if (storedExpenses && storedExpenses.length > 0) {
+      const tbody = document.getElementById("expenseBody");
+      tbody.innerHTML = ''; // Clear only if data exists
 
-    storedExpenses.forEach(exp => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-      <td data-label="Category"><input type="text" value="${exp.category}" /></td>
-      <td data-label="Amount (₹)"><input type="number" value="${exp.amount}" oninput="calculateTotal()" /></td>
-      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
-    `;
-      tbody.appendChild(tr);
-    });
+      storedExpenses.forEach(exp => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+        <td data-label="Category"><input type="text" value="${exp.category}" /></td>
+        <td data-label="Amount (₹)"><input type="number" value="${exp.amount}" oninput="calculateTotal()" /></td>
+        <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+      `;
+        tbody.appendChild(tr);
+      });
+    }
 
     calculateTotal();
-  }
+  };
 </script>
 </body>
 </html>
