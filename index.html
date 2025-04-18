@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Monthly Expense Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #f3f4f6, #e2e8f0);
+      padding: 20px;
+      margin: 0;
+    }
+
+    .tracker-container {
+      background: #fff;
+      padding: 30px;
+      max-width: 750px;
+      margin: auto;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #222;
+      font-size: 26px;
+      background: linear-gradient(to right, #007bff, #00bcd4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+      padding: 14px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    td {
+      padding: 10px;
+      vertical-align: middle;
+      transition: background-color 0.3s ease;
+    }
+
+    tr:hover td {
+      background-color: #f9f9f9;
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      background-color: #fdfdfd;
+      transition: all 0.2s ease-in-out;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0,123,255,0.3);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .delete-btn {
+      background-color: #e5deca;
+      color: #000;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      background-color: #e0a800;
+    }
+
+    .total {
+      font-weight: bold;
+      font-size: 20px;
+      text-align: right;
+      margin-top: 15px;
+      color: #212529;
+    }
+
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        background: #f9f9f9;
+        margin-bottom: 10px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        padding: 10px;
+      }
+
+      td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        border-bottom: 1px solid #eee;
+      }
+
+      td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #555;
+        margin-right: 10px;
+        flex-basis: 40%;
+      }
+
+      input[type="text"], input[type="number"] {
+        font-size: 14px;
+      }
+
+      .total {
+        text-align: center;
+        font-size: 18px;
+      }
+
+      .actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .actions button {
+        width: 100%;
+      }
+    }
+
+  </style>
+</head>
+<body>
+<div class="tracker-container">
+  <h2>💸 Monthly Expenses Tracker</h2>
+  <table id="expenseTable">
+    <thead>
+    <tr>
+      <th>Category</th>
+      <th>Amount (₹)</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+
+    <!-- BEGIN INSERTED CONTENT -->
+    <tbody id="expenseBody">
+    <tr>
+      <td data-label="Category"><input type="text" value="Rent" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="22000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Groceries (Home)" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="22000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Electricity" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="2000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Phone Bill" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="1000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Internet Bill" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="900" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Bike Petrol" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="2000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Bike Maintenance" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="1000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="EMI" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="38000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Term Insurance" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="2600" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Medical (Amma)" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="1500" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Grooming" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="1000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Tea/Coffee" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="1000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Toiletries" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="1500" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="YouTube Premium" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="195" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Education Loan" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="1000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Seeds + Snacks" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="2500" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Entertainment + Dates" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="4000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Amma + Pooja" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="2000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Praveen Personal" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="2000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Pooja RD (non-saving)" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="1000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="SIP" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="57000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Emergency Fund" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="10000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    <tr>
+      <td data-label="Category"><input type="text" value="Pooja School" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="6000" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+
+  </table>
+
+  <div class="actions">
+    <button onclick="addRow()">+ Add Expense</button>
+    <button onclick="printPage()">🖨️ Print</button>
+  </div>
+
+  <p class="total">Total Expenses: ₹<span id="totalAmount">0</span></p>
+</div>
+
+<script>
+  function calculateTotal() {
+    let total = 0;
+    const rows = document.querySelectorAll("#expenseBody tr");
+    const expenseData = [];
+
+    rows.forEach(row => {
+      const categoryInput = row.querySelector('input[type="text"]');
+      const amountInput = row.querySelector('input[type="number"]');
+      let amount = parseFloat(amountInput.value);
+
+      if (isNaN(amount) || amount < 0) {
+        amount = 0;
+        amountInput.value = "";
+      }
+
+      expenseData.push({
+        category: categoryInput.value,
+        amount: amount
+      });
+
+      total += amount;
+    });
+
+    document.getElementById("totalAmount").innerText = total.toLocaleString('en-IN');
+    localStorage.setItem('expenses', JSON.stringify(expenseData));
+  }
+
+  function addRow() {
+    const tbody = document.getElementById("expenseBody");
+    const lastRow = tbody.lastElementChild;
+    const lastInputs = lastRow.querySelectorAll("input");
+
+    const isFilled = Array.from(lastInputs).every(input => input.value.trim() !== "");
+
+    if (!isFilled) {
+      alert("Please fill in the previous row before adding a new one.");
+      return;
+    }
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td data-label="Category"><input type="text" placeholder="Category"/></td>
+      <td data-label="Amount (₹)"><input type="number" placeholder="0" oninput="calculateTotal()"/></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    `;
+    tbody.appendChild(tr);
+    tr.querySelector('input[type="text"]').focus();
+  }
+
+  function deleteRow(btn) {
+    const row = btn.closest("tr");
+    row.remove();
+    calculateTotal(); // this also updates localStorage
+  }
+
+  function printPage() {
+    window.print();
+  }
+  window.onload = function() {
+    const storedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
+
+    const tbody = document.getElementById("expenseBody");
+    tbody.innerHTML = ''; // Clear existing content
+
+    storedExpenses.forEach(exp => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+      <td data-label="Category"><input type="text" value="${exp.category}" /></td>
+      <td data-label="Amount (₹)"><input type="number" value="${exp.amount}" oninput="calculateTotal()" /></td>
+      <td data-label=""><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    `;
+      tbody.appendChild(tr);
+    });
+
+    calculateTotal();
+  }
+</script>
+</body>
+</html>
